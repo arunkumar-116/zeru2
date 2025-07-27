@@ -22,26 +22,39 @@ Wallet-level data was collected using [The Graph](https://thegraph.com/) GraphQL
 - Wallet list from `Wallet id - Sheet1.csv`
 - Subgraph ID and API key passed via `.env`
 
-### 🔍 Sample GraphQL Query
+### Sample GraphQL Query
 ```graphql
 {
-  user(id: "0x123...") {
-    id
-  }
-  borrows(first: 2) {
-    underlyingAmount
-    blockNumber
-  }
-  transfers(first: 2) {
-    id
-  }
-  markets(first: 3) {
-    id
-    totalBorrow
-    totalSupply
-    cTokenSymbol
-  }
-}
+        "query": f"""
+        {{
+          protocols(first: 3) {{
+            id
+            priceOracle
+            lastNewOracleBlockNumber
+            latestBlockNumber
+          }}
+          markets(first: 3) {{
+            id
+            creationBlockNumber
+            latestBlockNumber
+            cTokenSymbol
+            availableLiquidity
+            totalBorrow
+            totalSupply
+          }}
+          user(id: "{wallet.lower()}") {{
+            id
+          }}
+          borrows(first: 2) {{
+            underlyingAmount
+            blockNumber
+          }}
+          transfers(first: 2) {{
+            id
+          }}
+        }}
+        """
+    }
 ```
 ##  Feature Engineering
 
